@@ -5,6 +5,11 @@
       "source": "skills-il/localization",
       "sourceType": "github",
       "computedHash": "da7677bda48ea25e2a930dd89601ff5cf083211ca724b4c0d8aea94ecd5a2880"
+    },
+    "remotion-best-practices": {
+      "source": "skills-il/developer-tools",
+      "sourceType": "github",
+      "computedHash": "308d53902b62e664f704c3b85bac0e152759d5ead0751cbff61e4bd1103195de"
     }
   }
 }

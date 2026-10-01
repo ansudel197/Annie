@@ -37,30 +37,16 @@ const VoiceOver: React.FC<{ lines: Line[] }> = ({ lines }) => (
   </>
 );
 
-/** Background music, ducked under the voiceover. */
-const Music: React.FC<{ src: string; lines: Line[]; base: number; duck: number }> = ({
-  src,
-  lines,
-  base,
-  duck,
-}) => (
-  <Audio
-    src={staticFile(src)}
-    volume={(fr) => {
-      const t = fr / FPS;
-      let d = 0;
-      for (const l of lines) {
-        d = Math.max(
-          d,
-          interpolate(t, [l.at - 0.35, l.at, l.at + l.dur, l.at + l.dur + 0.5], [0, 1, 1, 0], {
-            extrapolateLeft: "clamp",
-            extrapolateRight: "clamp",
-          }),
-        );
-      }
-      return base - (base - duck) * d;
-    }}
-  />
+/** Opening and ending sounds from the Jeen brand video (no narration). */
+const BrandSounds: React.FC<{ endAt: number }> = ({ endAt }) => (
+  <>
+    <Sequence durationInFrames={f(3.3)} layout="none">
+      <Audio src={staticFile("sfx-open.m4a")} volume={0.85} />
+    </Sequence>
+    <Sequence from={f(endAt)} layout="none">
+      <Audio src={staticFile("sfx-end.m4a")} volume={0.85} />
+    </Sequence>
+  </>
 );
 
 /* ------------------------------------------------------------------ */
@@ -175,7 +161,7 @@ const CornerPills: React.FC = () => {
 /* ------------------------------------------------------------------ */
 const SCREEN_AT = 10.8;
 const CLOSING_AT = SCREEN_AT + SCREEN_DURATION - 0.3;
-export const WALKTHROUGH_SECONDS = CLOSING_AT + 8;
+export const WALKTHROUGH_SECONDS = CLOSING_AT + 8.6;
 
 // Voiceover start times are in seconds of the final video.
 const S = (e: number) => SCREEN_AT + e;
@@ -190,7 +176,7 @@ const WALK_LINES: Line[] = [
   { id: "w7", at: S(66.5), dur: 5.5, text: "Hover over any route to see its details: mode, origin, destination, priority and progress." },
   { id: "w8", at: S(76.5), dur: 9.55, text: "Switch views to compare lanes, completion and tonnage, so anyone in the organization, from executives to field operators, can spot bottlenecks and act faster." },
   { id: "w9", at: S(90.0), dur: 5.88, text: "From a plain-text question to a live, interactive control panel. Faster, data-driven decisions." },
-  { id: "w10", at: CLOSING_AT + 1.2, dur: 4.3, text: "Ready to scale AI on your terms? Request a demo at jeen.ai." },
+  { id: "w10", at: CLOSING_AT + 0.3, dur: 4.3, text: "Ready to scale AI on your terms? Request a demo at jeen.ai." },
 ];
 
 const WALK_ZOOMS: Zoom[] = [
@@ -278,7 +264,7 @@ export const Walkthrough: React.FC = () => {
         </AbsoluteFill>
       </Sequence>
       <VoiceOver lines={WALK_LINES} />
-      <Music src="music-full.m4a" lines={WALK_LINES} base={0.45} duck={0.14} />
+      <BrandSounds endAt={CLOSING_AT + 4.65} />
     </AbsoluteFill>
   );
 };
@@ -287,13 +273,11 @@ export const Walkthrough: React.FC = () => {
 /* 30-second promo                                                     */
 /* ------------------------------------------------------------------ */
 const PROMO_LINES: Line[] = [
-  { id: "p1", at: 0.4, dur: 3.11, text: "What if anyone in your company could simply talk to your data?" },
-  { id: "p2", at: 3.9, dur: 1.46, text: "Meet Jeen's data agent." },
+  { id: "p1", at: 3.35, dur: 3.11, text: "What if anyone in your company could simply talk to your data?" },
   { id: "p3", at: 6.8, dur: 3.96, text: "Ask in plain language, and get live data with instant insights." },
   { id: "p4", at: 13.7, dur: 1.92, text: "Then just say: “create a dashboard.”" },
   { id: "p5", at: 16.9, dur: 4.22, text: "And get a full, interactive dashboard, with maps, KPIs and charts." },
   { id: "p6", at: 23.6, dur: 3.23, text: "No SQL. No code. No BI bottleneck." },
-  { id: "p7", at: 27.3, dur: 2.03, text: "Jeen. AI on your terms." },
 ];
 export const PROMO_SECONDS = 30;
 
@@ -397,6 +381,6 @@ export const Promo: React.FC = () => (
       <Closing fadeOutFrames={12} />
     </Sequence>
     <VoiceOver lines={PROMO_LINES} />
-    <Music src="music-promo.m4a" lines={PROMO_LINES} base={0.6} duck={0.2} />
+    <BrandSounds endAt={26.7} />
   </AbsoluteFill>
 );

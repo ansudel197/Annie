@@ -20,7 +20,7 @@ import {
   SERIF,
   useSpring,
 } from "./brand";
-import { ChipCue, Screen, SCREEN_DURATION, Zoom } from "./screen";
+import { ChipCue, Screen, ScreenClip, SCREEN_DURATION } from "./screen";
 
 const f = (s: number) => Math.round(s * FPS);
 
@@ -157,163 +157,8 @@ const CornerPills: React.FC = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/* Full walkthrough                                                    */
+/* "No SQL. No code. No BI bottleneck." bubbles                         */
 /* ------------------------------------------------------------------ */
-const SCREEN_AT = 10.8;
-const CLOSING_AT = SCREEN_AT + SCREEN_DURATION - 0.3;
-export const WALKTHROUGH_SECONDS = CLOSING_AT + 8.6;
-
-// Voiceover start times are in seconds of the final video.
-const S = (e: number) => SCREEN_AT + e;
-const WALK_LINES: Line[] = [
-  { id: "w0", at: 3.4, dur: 7.17, text: "Meet Jeen's data agent: a virtual analyst that lets anyone query complex, live databases, in plain language." },
-  { id: "w1", at: S(0.2), dur: 7.28, text: "The process starts with a simple query. The user asks the AI assistant: “What's in transit right now? Show 20 results.”" },
-  { id: "w2", at: S(8.7), dur: 9.53, text: "Instantly, the system processes the request and retrieves a detailed data table of 20 live shipments, providing raw data and automated insights at a glance." },
-  { id: "w3", at: S(19.4), dur: 9.34, text: "Shipment references, transport modes, origins, destinations and coordinates. All from a plain-language question. No SQL, no code, and no BI tools." },
-  { id: "w4", at: S(30.0), dur: 5.9, text: "To get a better visual understanding of the data, the user simply types a follow-up command: “create a dashboard.”" },
-  { id: "w5", at: S(41.3), dur: 2.65, text: "The agent builds a complete app around the data." },
-  { id: "w6", at: S(48.0), dur: 16.54, text: "Within seconds, the application generates a comprehensive, interactive dashboard. It features top-level key metrics, a dynamic global map plotting precise transit routes, and interactive data visualizations, transforming raw data into clear, actionable operational intelligence." },
-  { id: "w7", at: S(66.5), dur: 5.5, text: "Hover over any route to see its details: mode, origin, destination, priority and progress." },
-  { id: "w8", at: S(76.5), dur: 9.55, text: "Switch views to compare lanes, completion and tonnage, so anyone in the organization, from executives to field operators, can spot bottlenecks and act faster." },
-  { id: "w9", at: S(90.0), dur: 5.88, text: "From a plain-text question to a live, interactive control panel. Faster, data-driven decisions." },
-  { id: "w10", at: CLOSING_AT + 0.3, dur: 4.3, text: "Ready to scale AI on your terms? Request a demo at jeen.ai." },
-];
-
-const WALK_ZOOMS: Zoom[] = [
-  [0, 1.5, 50, 96],
-  [3.3, 1.5, 50, 96],
-  [4.4, 1, 50, 50],
-  [8.8, 1, 50, 50],
-  [10, 1.18, 50, 20],
-  [19.5, 1.18, 50, 20],
-  [21, 1, 50, 50],
-  [30.6, 1, 50, 50],
-  [31.6, 1.5, 50, 96],
-  [34.6, 1.5, 50, 96],
-  [35.6, 1, 50, 50],
-  [41.2, 1, 50, 50],
-  [42, 1.3, 40, 72],
-  [47, 1.3, 40, 72],
-  [47.62, 1, 50, 50],
-  [51, 1, 50, 50],
-  [52.2, 1.25, 50, 12],
-  [57.5, 1.25, 50, 12],
-  [59, 1, 50, 50],
-  [66.2, 1, 50, 50],
-  [67.4, 1.32, 82, 72],
-  [73, 1.32, 82, 72],
-  [74.4, 1, 50, 50],
-];
-
-const WALK_CHAPTERS: ChipCue[] = [
-  { from: 0, to: 8.6, text: "01 · Ask in plain language" },
-  { from: 8.6, to: 30.4, text: "02 · Text-to-Data" },
-  { from: 30.4, to: 47.62, text: "03 · “create a dashboard”" },
-  { from: 47.62, to: 999, text: "04 · Text-to-Dashboard" },
-];
-
-const FAST_FORWARD: ChipCue[] = [
-  { from: 4.0, to: 8.1, text: "▶▶ Fast-forward 4×" },
-  { from: 34.65, to: 41.1, text: "▶▶ Fast-forward 6×" },
-];
-
-export const Walkthrough: React.FC = () => {
-  const frame = useCurrentFrame();
-  const closingIn = interpolate(frame, [f(CLOSING_AT), f(CLOSING_AT) + 12], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  return (
-    <AbsoluteFill style={{ background: C.cream }}>
-      <Sequence durationInFrames={f(SCREEN_AT) + 10}>
-        <PillOpening clearAt={66}>
-          <TitleCard
-            delay={78}
-            headline="Ask your data"
-            accent="anything."
-            sub="Live data, instant insights and dashboards, from plain language."
-          />
-        </PillOpening>
-      </Sequence>
-      <Sequence from={f(SCREEN_AT)} durationInFrames={f(SCREEN_DURATION)}>
-        <AbsoluteFill
-          style={{
-            opacity: interpolate(frame - f(SCREEN_AT), [0, 10], [0, 1], {
-              extrapolateRight: "clamp",
-            }),
-          }}
-        >
-          <CornerPills />
-          <Screen
-            from={0}
-            width={1560}
-            top={62}
-            zooms={WALK_ZOOMS}
-            chapters={WALK_CHAPTERS}
-            fastForward={FAST_FORWARD}
-            flashAt={[47.62]}
-          />
-        </AbsoluteFill>
-      </Sequence>
-      <AbsoluteFill style={{ top: 880, height: 140, justifyContent: "center", padding: "0 220px" }}>
-        <Captions lines={WALK_LINES.slice(1, -1)} />
-      </AbsoluteFill>
-      <Sequence from={f(CLOSING_AT)}>
-        <AbsoluteFill style={{ opacity: closingIn }}>
-          <Closing />
-        </AbsoluteFill>
-      </Sequence>
-      <VoiceOver lines={WALK_LINES} />
-      <BrandSounds endAt={CLOSING_AT + 4.65} />
-    </AbsoluteFill>
-  );
-};
-
-/* ------------------------------------------------------------------ */
-/* 30-second promo                                                     */
-/* ------------------------------------------------------------------ */
-const PROMO_LINES: Line[] = [
-  { id: "p1", at: 3.35, dur: 3.11, text: "What if anyone in your company could simply talk to your data?" },
-  { id: "p3", at: 6.8, dur: 3.96, text: "Ask in plain language, and get live data with instant insights." },
-  { id: "p4", at: 13.7, dur: 1.92, text: "Then just say: “create a dashboard.”" },
-  { id: "p5", at: 16.9, dur: 4.22, text: "And get a full, interactive dashboard, with maps, KPIs and charts." },
-  { id: "p6", at: 23.6, dur: 3.23, text: "No SQL. No code. No BI bottleneck." },
-];
-export const PROMO_SECONDS = 30;
-
-const PromoClip: React.FC<{
-  from: number;
-  zooms: Zoom[];
-  label: string;
-  flash?: boolean;
-}> = ({ from, zooms, label, flash }) => {
-  const p = useSpring(4);
-  return (
-    <AbsoluteFill>
-      <CornerPills />
-      <Screen from={from} width={1500} top={70} zooms={zooms} flashAt={flash ? [from] : []} />
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 820,
-          textAlign: "center",
-          fontFamily: SANS,
-          fontSize: 76,
-          fontWeight: 700,
-          letterSpacing: -1.5,
-          color: C.maroon,
-          opacity: p,
-          transform: `translateY(${(1 - p) * 24}px)`,
-        }}
-      >
-        {label}
-      </div>
-    </AbsoluteFill>
-  );
-};
-
 const NoCode: React.FC = () => {
   const items: [string, string, string][] = [
     ["No SQL.", C.red, "#fff"],
@@ -355,32 +200,139 @@ const NoCode: React.FC = () => {
   );
 };
 
-export const Promo: React.FC = () => (
-  <AbsoluteFill style={{ background: C.cream }}>
-    <Sequence durationInFrames={f(6.3)}>
-      <PillOpening clearAt={56}>
-        <TitleCard delay={68} headline="Talk to your" accent="data." />
-      </PillOpening>
-    </Sequence>
-    <Sequence from={f(6.3)} durationInFrames={f(3.2)}>
-      <PromoClip from={0} zooms={[[0, 1.5, 50, 96], [3.2, 1.55, 50, 96]]} label="Ask in plain language" />
-    </Sequence>
-    <Sequence from={f(9.5)} durationInFrames={f(4)}>
-      <PromoClip from={8.6} zooms={[[8.6, 1, 50, 30], [12.6, 1.2, 50, 20]]} label="Get live data + insights" flash />
-    </Sequence>
-    <Sequence from={f(13.5)} durationInFrames={f(3)}>
-      <PromoClip from={31.8} zooms={[[31.8, 1.5, 50, 96], [34.8, 1.55, 50, 96]]} label={"Say “create a dashboard”"} />
-    </Sequence>
-    <Sequence from={f(16.5)} durationInFrames={f(7)}>
-      <PromoClip from={51.6} zooms={[[51.6, 1.05, 50, 30], [58.6, 1.22, 55, 35]]} label="A full dashboard. In seconds." flash />
-    </Sequence>
-    <Sequence from={f(23.5)} durationInFrames={f(3)}>
-      <NoCode />
-    </Sequence>
-    <Sequence from={f(26.5)}>
-      <Closing fadeOutFrames={12} />
-    </Sequence>
-    <VoiceOver lines={PROMO_LINES} />
-    <BrandSounds endAt={26.7} />
-  </AbsoluteFill>
-);
+/* ------------------------------------------------------------------ */
+/* Dashboard montage: what plain-text questions turn into               */
+/* ------------------------------------------------------------------ */
+const MONTAGE: { from: number; label: string }[] = [
+  { from: 41.7, label: "Live route maps" },
+  { from: 70.7, label: "Interactive charts" },
+  { from: 80.7, label: "KPIs & lane tables" },
+];
+
+const Montage: React.FC = () => {
+  const head = useSpring(0);
+  const w = 560;
+  const gap = 40;
+  const left0 = (1920 - (w * 3 + gap * 2)) / 2;
+  return (
+    <AbsoluteFill style={{ background: C.cream, fontFamily: SANS, color: C.maroon }}>
+      <CornerPills />
+      <div
+        style={{
+          position: "absolute",
+          top: 150,
+          width: "100%",
+          textAlign: "center",
+          opacity: head,
+          transform: `translateY(${(1 - head) * 20}px)`,
+        }}
+      >
+        <span style={{ fontSize: 84, letterSpacing: -2 }}>Plain-text questions. </span>
+        <span style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 100, color: C.red }}>
+          Live visual answers.
+        </span>
+      </div>
+      {MONTAGE.map((m, i) => {
+        const p = useSpring(10 + i * 8, 16);
+        const left = left0 + i * (w + gap);
+        return (
+          <div key={m.label} style={{ opacity: Math.min(1, p * 1.5) }}>
+            <div style={{ transform: `translateY(${(1 - p) * 80}px)` }}>
+              <ScreenClip from={m.from} left={left} top={400} width={w} />
+              <div
+                style={{
+                  position: "absolute",
+                  left,
+                  top: 400 + (w * 600) / 1240 + 30,
+                  width: w,
+                  textAlign: "center",
+                  fontSize: 36,
+                  fontWeight: 600,
+                }}
+              >
+                {m.label}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </AbsoluteFill>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* Walkthrough                                                         */
+/* ------------------------------------------------------------------ */
+const TITLE_END = 10.8;
+const NOCODE_END = 14.4;
+const SCREEN_AT = 23.4;
+const CLOSING_AT = SCREEN_AT + SCREEN_DURATION - 0.3;
+export const WALKTHROUGH_SECONDS = CLOSING_AT + 8.6;
+
+// Start times are in seconds of the final video.
+const S = (e: number) => SCREEN_AT + e;
+const WALK_LINES: Line[] = [
+  { id: "w0", at: 3.4, dur: 7.17, text: "Meet Jeen's data agent: a virtual analyst that lets anyone query complex, live databases, in plain language." },
+  { id: "p6", at: TITLE_END + 0.2, dur: 3.23, text: "No SQL. No code. No BI bottleneck." },
+  { id: "m1", at: NOCODE_END + 0.5, dur: 5.08, text: "Simple text questions turn into live charts, maps and dashboards. Here's how it works." },
+  { id: "w1", at: S(0.0), dur: 7.28, text: "The process starts with a simple query. The user asks the AI assistant: “What's in transit right now? Show 20 results.”" },
+  { id: "w2", at: S(7.4), dur: 9.53, text: "Instantly, the system processes the request and retrieves a detailed data table of 20 live shipments, providing raw data and automated insights at a glance." },
+  { id: "w3", at: S(17.6), dur: 9.34, text: "Shipment references, transport modes, origins, destinations and coordinates. All from a plain-language question. No SQL, no code, and no BI tools." },
+  { id: "w4", at: S(27.2), dur: 5.9, text: "To get a better visual understanding of the data, the user simply types a follow-up command: “create a dashboard.”" },
+  { id: "w5", at: S(33.4), dur: 2.65, text: "The agent builds a complete app around the data." },
+  { id: "w6", at: S(38.6), dur: 16.54, text: "Within seconds, the application generates a comprehensive, interactive dashboard. It features top-level key metrics, a dynamic global map plotting precise transit routes, and interactive data visualizations, transforming raw data into clear, actionable operational intelligence." },
+  { id: "w7", at: S(56.9), dur: 5.5, text: "Hover over any route to see its details: mode, origin, destination, priority and progress." },
+  { id: "w8", at: S(66.9), dur: 9.55, text: "Switch views to compare lanes, completion and tonnage, so anyone in the organization, from executives to field operators, can spot bottlenecks and act faster." },
+  { id: "w9", at: S(80.4), dur: 5.88, text: "From a plain-text question to a live, interactive control panel. Faster, data-driven decisions." },
+  { id: "w10", at: CLOSING_AT + 0.3, dur: 4.3, text: "Ready to scale AI on your terms? Request a demo at jeen.ai." },
+];
+const CAPTIONED = WALK_LINES.filter((l) => l.id.startsWith("w") && l.id !== "w0" && l.id !== "w10");
+
+const WALK_CHAPTERS: ChipCue[] = [
+  { from: 0, to: 6.3, text: "01 · Ask in plain language" },
+  { from: 6.3, to: 27.2, text: "02 · Text-to-Data" },
+  { from: 27.2, to: 38.0, text: "03 · “create a dashboard”" },
+  { from: 38.0, to: 999, text: "04 · Text-to-Dashboard" },
+];
+
+export const Walkthrough: React.FC = () => {
+  const frame = useCurrentFrame();
+  const closingIn = interpolate(frame, [f(CLOSING_AT), f(CLOSING_AT) + 12], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  return (
+    <AbsoluteFill style={{ background: C.cream }}>
+      <Sequence durationInFrames={f(TITLE_END)}>
+        <PillOpening clearAt={66}>
+          <TitleCard
+            delay={78}
+            headline="Ask your data"
+            accent="anything."
+            sub="Live data, instant insights and dashboards, from plain language."
+          />
+        </PillOpening>
+      </Sequence>
+      <Sequence from={f(TITLE_END)} durationInFrames={f(NOCODE_END - TITLE_END)}>
+        <NoCode />
+      </Sequence>
+      <Sequence from={f(NOCODE_END)} durationInFrames={f(SCREEN_AT - NOCODE_END)}>
+        <Montage />
+      </Sequence>
+      <Sequence from={f(SCREEN_AT)} durationInFrames={f(SCREEN_DURATION)}>
+        <CornerPills />
+        <Screen top={160} chapters={WALK_CHAPTERS} flashAt={[6.3, 32.1, 38.0]} />
+      </Sequence>
+      <AbsoluteFill style={{ top: 800, height: 140, justifyContent: "center", padding: "0 300px" }}>
+        <Captions lines={CAPTIONED} />
+      </AbsoluteFill>
+      <Sequence from={f(CLOSING_AT)}>
+        <AbsoluteFill style={{ opacity: closingIn }}>
+          <Closing />
+        </AbsoluteFill>
+      </Sequence>
+      <VoiceOver lines={WALK_LINES} />
+      <BrandSounds endAt={CLOSING_AT + 4.65} />
+    </AbsoluteFill>
+  );
+};

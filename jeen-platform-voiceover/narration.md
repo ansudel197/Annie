@@ -6,7 +6,7 @@ Start times are seconds into the 80-second video.
 
 | Start | Section | Narration |
 |---|---|---|
-| 0.4 | Intro | Let's be honest. Enterprise AI rarely stays in one place. |
+| 1.0 | Intro | Enterprise AI rarely stays in one place. |
 | 5.8 | Intro | Every new tool adds another layer of access, risk, and control. |
 | 10.2 | Jeen | Meet Jeen: the governed operating layer for enterprise AI, built to run anywhere. |
 | 16.0 | 01 Agent Factory | Agent Factory lets you build agents, or bring your own, then test and monitor every one. |
